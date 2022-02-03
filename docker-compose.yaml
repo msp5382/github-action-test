@@ -4,10 +4,4 @@ services:
     build: ./
     image: ghcr.io/msp5382/github-action-test:release
     ports:
-      - "3000:80"
-    networks:
-      - sccu-network
-
-networks:
-  sccu-network:
-    name: sccu-network
+      - "80:3000"
