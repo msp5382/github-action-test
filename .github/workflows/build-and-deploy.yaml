@@ -19,6 +19,14 @@ jobs:
     runs-on: ${{ matrix.platform }}
 
     steps:
+      - name: Set environment
+        run: |
+          BRANCH=${GITHUB_REF##*/}
+          STAGE=$BRANCH
+          echo "BRANCH=$BRANCH" >> $GITHUB_ENV
+          echo "STAGE=$STAGE" >> $GITHUB_ENV
+          echo "PROJECT=SCCU-frontend-$STAGE" >> $GITHUB_ENV
+
       - uses: actions/checkout@v2
 
       - name: Set up Docker Buildx
@@ -50,16 +58,16 @@ jobs:
 
       - name: Deploy to VM
         uses: appleboy/ssh-action@master
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          envs: GITHUB_TOKEN, GITHUB_REPOSITORY, PROJECT, BRANCH, STAGE
           script: |
-            docker pull ${{ env.IMAGE_REPO }}:${{ steps.meta.outputs.version }}
-            docker-compose up -d
-            if [[ "$(docker images --filter "dangling=true" -q)" == "" ]]; then
-              echo "No image with <none> tag"
-            else
-              docker rmi $(docker images --filter "dangling=true" -q) || true
-            fi
+
+            rm -rf $PROJECT
+            git clone -b $BRANCH https://.:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY $PROJECT
+            cd $PROJECT
