@@ -71,3 +71,10 @@ jobs:
             rm -rf $PROJECT
             git clone -b $BRANCH https://.:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY $PROJECT
             cd $PROJECT
+
+            docker pull ${{ env.IMAGE_REPO }}:${{ steps.meta.outputs.version }}
+            docker-compose --project-name=$PROJECT -f docker-compose.yaml stop
+            docker-compose --project-name=$PROJECT -f docker-compose.yaml up -d
+
+            cd ..
+            rm -rf $PROJECT
