@@ -67,7 +67,6 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           envs: GITHUB_TOKEN, GITHUB_REPOSITORY, PROJECT, BRANCH, STAGE
           script: |
-
             rm -rf $PROJECT
             git clone -b $BRANCH https://.:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY $PROJECT
             cd $PROJECT
@@ -75,6 +74,3 @@ jobs:
             sudo docker pull ${{ env.IMAGE_REPO }}:${{ steps.meta.outputs.version }}
             sudo docker-compose --project-name=$PROJECT -f docker-compose.yaml stop
             sudo docker-compose --project-name=$PROJECT -f docker-compose.yaml up -d
-
-            cd ..
-            rm -rf $PROJECT
