@@ -1,9 +1,8 @@
 FROM node:13.3.0-alpine
 
 WORKDIR /app
-COPY . .
+COPY ./frontend .
 
-RUN npm install
-RUN npm run build
+RUN npm install && npm run build
 
 CMD ["npm", "run", "start"]
