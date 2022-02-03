@@ -5,4 +5,4 @@ COPY . .
 
 RUN cd frontend && npm install && npm run build
 
-CMD ["cd","frontend","&&","npm", "run", "start"]
+CMD ["ls"]
