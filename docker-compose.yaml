@@ -2,5 +2,6 @@ version: "3.3"
 services:
   frontend:
     build: ./
+    image: ghcr.io/msp5382/github-action-test:release
     ports:
       - "3000:80"
