@@ -10,6 +10,7 @@ env:
 
 jobs:
   build-and-deploy:
+    environment: prod
     strategy:
       matrix:
         node-version: [14.x]
