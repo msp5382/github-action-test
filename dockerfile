@@ -5,4 +5,6 @@ COPY . .
 
 RUN cd frontend && npm install && npm run build
 
-CMD ["cd frontend", "npm", "start"]
+WORKDIR /app/frontend
+
+CMD ["npm", "start"]
